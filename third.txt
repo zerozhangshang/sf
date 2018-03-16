@@ -1,0 +1,32 @@
+1. 用C语言编写一个源程序文件main.c，要求实现以下功能。
+  (1) 打开当前目录下的文件 foo.txt ，并将其内容显示出来。如果该文件不存在，就报告错误并退出。可以参照Linux下cat 命令所实现的功能来实现。 
+  (2) 编写一个能够利用make实现自动编译的文件Makefile，以便生成可执行文件main。
+
+要求将源代码文件main.c和Makefile的内容，除了完整地放在下面的答案中以外，还要求将文件放到源代码分享网站上（推荐coding.net），并将代码仓库的访问链接附加在答案中。
+
+【答】
+源代码git仓库地址如下：
+
+main.c 的源代码如下：
+#include<stdio.h>
+int main()
+{char buf[128]={0};  //创建缓冲区；
+ FILE *fp;
+fp = fopen(“foo.txt”, “r”);  //以只读的方式打开文件；
+if (fp== NULL){         //文件不存在；
+ printf(“fail to open file!\n”);
+return -1; 
+}
+while(0!=fread(buf,1,127,fp))  //不能读满，最大只能用127
+{
+ printf(“%s”,buf);
+ Memset(buf,0,128);  //每次都要清0；
+}
+fclose(fp);
+  return 0;
+}
+
+
+Makefile内容如下：
+  main:main.o
+  gcc -o main main.c
